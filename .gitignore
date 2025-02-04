@@ -1,5 +1,5 @@
 # Custom Folders
-artifacts/data
+artifacts/
 
 # VSCode
 .vscode/
