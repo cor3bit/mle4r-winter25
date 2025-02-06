@@ -54,7 +54,7 @@ def parse_args():
                         help="Learning rate passed to the optimizer")
 
     # ====== Tracking ======
-    parser.add_argument("--track", type=lambda x: bool(strtobool(x)), default=False, nargs="?", const=True,
+    parser.add_argument("--track", type=lambda x: bool(strtobool(x)), default=True, nargs="?", const=True,
                         help="if toggled, this experiment will be tracked with Weights and Biases")
     parser.add_argument("--wandb-project-name", type=str, default="mle4r",
                         help="the wandb's project name")
@@ -109,10 +109,6 @@ class NanoLM(nn.Module):
 
     @nn.compact
     def __call__(self, x, training: bool = True):
-        # special code to handle vmapp-ed calls, transforms (L,) to (1, L,) for single samples
-        if x.ndim == 1:
-            x = x[None, :]
-
         seq_len = x.shape[1]
 
         x = nn.Embed(self.vocab_size, self.embed_size)(x) + \
